@@ -1,39 +1,47 @@
 package fr.minemobs.animes;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
-import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnimeSearcherAPI {
 
     String jsonUrl = "https://neko-sama.fr/animes-search.json";
 
-    public Anime getJSONFromTitle(TitleType titleType, String animeTitle) throws Exception {
-
+    public Anime getJSONFromTitle(TitleType titleType, String animeTitle) {
         switch (titleType){
             case TITLE:
-                //String json = readUrl(jsonUrl);
-                InputStream is = new URL(jsonUrl).openStream();
-                Reader reader = new InputStreamReader(is,"UTF-8");
+                try{
+                    //String json = readUrl(jsonUrl);
+                    InputStream is = new URL(jsonUrl).openStream();
+                    Reader json = new InputStreamReader(is,"UTF-8");
 
-                Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
-                List<Anime> animes = Arrays.asList(gson.fromJson(reader, Anime[].class));
-                reader.close();
-                is.close();
-                for (Anime anime : animes){
-                    if(anime.getTitle().equalsIgnoreCase(animeTitle)){
+                    Gson gson = new Gson();
+                    Type animeListType = new TypeToken<List<Anime>>(){}.getType();
+                    List<Anime> animes = gson.fromJson(json, animeListType);
+                    List<Anime> animes1 = animes.stream().filter(anime1 -> anime1.getTitle().equalsIgnoreCase(animeTitle)).collect(Collectors.toList());
+                    for (Anime anime : animes1) {
                         return anime;
-                    }else{
-                        return null;
                     }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             case TITLE_ENGLISH:
+
             case TITLE_ROMANJI:
+
             default:
         }
 
