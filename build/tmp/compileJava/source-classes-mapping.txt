@@ -1,5 +1,3 @@
-fr/minemobs/animes/AnimeList.java
- fr.minemobs.animes.AnimeList
 fr/minemobs/animes/Anime.java
  fr.minemobs.animes.Anime
 fr/minemobs/animes/AnimeSearcherAPI.java
@@ -8,3 +6,5 @@ fr/minemobs/animes/AnimeSearcherAPI.java
  fr.minemobs.animes.AnimeSearcherAPI$TitleType
 fr/minemobs/animes/Test.java
  fr.minemobs.animes.Test
+fr/minemobs/animes/AnimeList.java
+ fr.minemobs.animes.AnimeList
