@@ -8,10 +8,11 @@ You just need to add jitpack as a repository
 
 Like this:
 
-`
+```
 repositories {
 maven { url 'https://jitpack.io' }
-}` 
+}
+```
 
 And add in your dependencies this :
 
