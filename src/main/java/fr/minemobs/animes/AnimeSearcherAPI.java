@@ -14,35 +14,27 @@ public class AnimeSearcherAPI {
 
     String jsonUrl = "https://neko-sama.fr/animes-search.json";
 
-    public Anime getJSONFromTitle(TitleType titleType, String animeTitle) {
-        switch (titleType){
-            case TITLE:
-                try{
-                    //String json = readUrl(jsonUrl);
-                    InputStream is = new URL(jsonUrl).openStream();
-                    Reader json = new InputStreamReader(is,"UTF-8");
+    public Anime getJSONFromTitle(String animeTitle) {
+        try{
+            //String json = readUrl(jsonUrl);
+            InputStream is = new URL(jsonUrl).openStream();
+            Reader json = new InputStreamReader(is,"UTF-8");
 
-                    Gson gson = new Gson();
-                    Type animeListType = new TypeToken<List<Anime>>(){}.getType();
-                    List<Anime> animes = gson.fromJson(json, animeListType);
-                    animes.stream().filter(anime1 -> anime1.getTitle().equalsIgnoreCase(animeTitle)).collect(Collectors.toList());
-                    for (Anime anime : animes) {
-                        return anime;
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            case TITLE_ENGLISH:
-
-            case TITLE_ROMANJI:
-
-            default:
+            Gson gson = new Gson();
+            Type animeListType = new TypeToken<List<Anime>>(){}.getType();
+            List<Anime> animes = gson.fromJson(json, animeListType);
+            animes = animes.stream().filter(anime1 -> anime1.getTitle().equalsIgnoreCase(animeTitle)).collect(Collectors.toList());
+            for (Anime anime : animes) {
+                return anime;
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -77,10 +69,4 @@ public class AnimeSearcherAPI {
     public void getJSONFromId(String url, int id) {
 
     }*/
-
-    public enum TitleType {
-        TITLE,
-        TITLE_ENGLISH,
-        TITLE_ROMANJI
-    }
 }
