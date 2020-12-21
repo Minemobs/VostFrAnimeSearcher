@@ -1,5 +1,6 @@
 package fr.minemobs.animes;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public class Test {
@@ -8,10 +9,13 @@ public class Test {
         AnimeSearcherAPI animes = new AnimeSearcherAPI();
         String animeTitle = "Jujutsu kaisen";
         Anime anime = animes.getJSONFromTitle(animeTitle);
-        System.out.println(anime.getUrl());
-        /*String test = "https://neko-sama.fr/anime/info/161-whistle-vostfr";
-        int ep = 5;
-        System.out.println(test.replace("info", "episode").replace("-vostfr","-0"  + ep + "-vostfr"));*/
+        //System.out.println(anime.getUrl());
+        try {
+            AnimeHtml animeHtml = animes.getHtmlPageOfTheAnime(anime, 12);
+            System.out.println(animeHtml.getLinkOfTheEpisode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
