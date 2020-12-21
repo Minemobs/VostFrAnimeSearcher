@@ -27,19 +27,23 @@ You just need to do that
 public class Main {
 
     public static void main(String[] args) {
+        //Instantiate the class AnimeSearcherAPI
+        AnimeSearcherAPI animes = new AnimeSearcherAPI();
+        //Set the name of the anime
+        String animeTitle = "Jujutsu kaisen";
+        //Create the variable anime which get the result of the function getJSONFromTitle()
+        Anime anime = animes.getJSONFromTitle(animeTitle);
+        //Create the variable animeHtml
+        AnimeHtml animeHtml;
         try {
-            AnimeSearcherAPI animes = new AnimeSearcherAPI();
-            //We specify the name of the searched anime
-            String animeTitle = "Jujutsu Kaisen";
-            Anime anime = animes.getJSONFromTitle(AnimeSearcherAPI.TitleType.TITLE, animeTitle);
-            //We print the url of the anime
-            System.out.println(anime.getUrl());
-            //Get all genres
-            //If genre is not found it will print nothing.
-            for (String genre : anime.getGenres()) {
-                System.out.println(genre);
-            }
-        }catch (Exception e){
+            //Specify the episode searched
+            animeHtml = animes.getHtmlPageOfTheAnime(anime, 12);
+            //Print the link of the episode
+            System.out.println(animeHtml.getLinkOfTheEpisode());
+            //Print the synopsis of the anime
+            System.out.println(animeHtml.getSynop());
+        } catch (Exception e) {
+            //If there is an exception, print the error
             e.printStackTrace();
         }
     }
