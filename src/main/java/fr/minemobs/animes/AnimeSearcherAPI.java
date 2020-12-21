@@ -25,8 +25,8 @@ public class AnimeSearcherAPI {
                     Gson gson = new Gson();
                     Type animeListType = new TypeToken<List<Anime>>(){}.getType();
                     List<Anime> animes = gson.fromJson(json, animeListType);
-                    List<Anime> animes1 = animes.stream().filter(anime1 -> anime1.getTitle().equalsIgnoreCase(animeTitle)).collect(Collectors.toList());
-                    for (Anime anime : animes1) {
+                    animes.stream().filter(anime1 -> anime1.getTitle().equalsIgnoreCase(animeTitle)).collect(Collectors.toList());
+                    for (Anime anime : animes) {
                         return anime;
                     }
                 } catch (UnsupportedEncodingException e) {

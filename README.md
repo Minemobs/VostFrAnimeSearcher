@@ -34,6 +34,11 @@ public class Main {
             Anime anime = animes.getJSONFromTitle(AnimeSearcherAPI.TitleType.TITLE, animeTitle);
             //We print the url of the anime
             System.out.println(anime.getUrl());
+            //Get all genres
+            //If genre is not found it will print nothing.
+            for (String genre : anime.getGenres()) {
+                System.out.println(genre);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
