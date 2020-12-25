@@ -17,7 +17,9 @@ maven { url 'https://jitpack.io' }
 
 And add in your dependencies this :
 
-`implementation 'com.github.Minemobs:VostFrAnimeSearcher:-SNAPSHOT'`
+(Replace v1.0 by the release you want)
+
+`implementation 'com.github.Minemobs:VostFrAnimeSearcher:v1.0'`
 
 - ### How do I use the API ?
 
