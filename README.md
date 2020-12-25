@@ -1,4 +1,5 @@
 # Anime VOSTFR API
+[![](https://jitpack.io/v/Minemobs/VostFrAnimeSearcher.svg)](https://jitpack.io/#Minemobs/VostFrAnimeSearcher)
 
 ## By Minemobs
 
