@@ -2,15 +2,21 @@ package fr.minemobs.animes;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class Test {
 
     public static void main(String[] args) {
+        System.out.println("Choose what anime you want to search.");
+        Scanner scanner = new Scanner(System.in);
         //Instantiate the class AnimeSearcherAPI
         AnimeSearcherAPI animes = new AnimeSearcherAPI();
         //Set the name of the anime
-        String animeTitle = "Jujutsu kaisen";
+        String animeTitle = scanner.nextLine();
         //Create the variable anime which get the result of the function getJSONFromTitle()
+        if (animes.getJSONFromTitle(animeTitle) == null) {
+            throw new NullPointerException("This anime is not on NekoSama");
+        }
         Anime anime = animes.getJSONFromTitle(animeTitle);
         try {
             //Create the variable animeHtml and
