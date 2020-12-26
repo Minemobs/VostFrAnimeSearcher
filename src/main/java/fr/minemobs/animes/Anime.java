@@ -12,8 +12,10 @@ public class Anime {
     private String[] genres;
     private String url;
     private String nbrOfEps;
+    private String type;
 
-    public Anime(String title, String title_english, String title_romanji, int id, String other, String[] genres, String url, String nbrOfEps) {
+    public Anime(String title, String title_english, String title_romanji, int id, String other, String[] genres, String url, String nbrOfEps,
+                 String type) {
         this.title = title;
         this.title_english = title_english;
         this.title_romanji = title_romanji;
@@ -22,6 +24,11 @@ public class Anime {
         this.genres = genres;
         this.url = url;
         this.nbrOfEps = nbrOfEps;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getNbrOfEps() {
@@ -73,6 +80,7 @@ public class Anime {
                 ", genres=" + Arrays.toString(genres) +
                 ", url='" + url + '\'' +
                 ", nbrOfEps='" + nbrOfEps + '\'' +
+                ", type=" + type +
                 '}';
     }
 }
