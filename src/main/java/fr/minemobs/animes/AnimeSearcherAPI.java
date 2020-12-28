@@ -71,10 +71,12 @@ public class AnimeSearcherAPI {
         Document doc = Jsoup.connect(anime.getUrl()).get();
         Elements titles = doc.getElementsByClass("episode");
         AtomicInteger nbrOfEps = new AtomicInteger();
-        titles.forEach(element -> {
-            nbrOfEps.getAndIncrement();});
+        titles.forEach(element -> nbrOfEps.getAndIncrement());
 
         String synopsis = doc.getElementsByClass("synopsis").text();
+
+        String urlOfTheCover = doc.getElementsByClass("cover").html().replace("<img src=", "")
+                .replace(Character.toString('"'),"").replace(">", "");
 
         if(episodeSearched > nbrOfEps.get()){
             throw new ArrayIndexOutOfBoundsException("L'episode cherché est supérieur au nombre d'épisode existant");
@@ -88,7 +90,7 @@ public class AnimeSearcherAPI {
         }else {
             url = anime.getUrl().replace("info", "episode").replace("-vostfr", "-" + episodeSearched + "-vostfr");
         }
-        AnimeHtml animeHtml = new AnimeHtml(synopsis, url, nbrOfEps.intValue());
+        AnimeHtml animeHtml = new AnimeHtml(synopsis, url, nbrOfEps.intValue(), urlOfTheCover);
         return animeHtml;
     }
 }

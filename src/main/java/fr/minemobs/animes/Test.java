@@ -100,6 +100,7 @@ public class Test {
                         "Url:" + anime.getUrl() + "\n" +
                         "Synopsis: " + animeHtml.getSynop() + "\n" +
                         "Url of episode: " + animeHtml.getLinkOfTheEpisode() + "\n" +
+                        "Url of the cover: " + animeHtml.getUrlOfTheCover() + "\n" +
                         "-------------------------------------------------------------");
             } catch (Exception e) {
                 //If there is an error, print the error
