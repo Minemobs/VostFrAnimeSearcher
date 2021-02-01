@@ -57,7 +57,12 @@ public class Test {
         try {
             //Create the variable animeHtml and
             //Specify the episode searched
-            AnimeHtml animeHtml = animes.getHtmlPageOfTheAnime(anime, 12);
+            AnimeHtml animeHtml = null;
+            if(anime.getType().equalsIgnoreCase("tv")){
+                animeHtml = animes.getHtmlPageOfTheAnime(anime, 12);
+            }else{
+                animeHtml = animes.getHtmlPageOfTheAnime(anime, 1);
+            }
             //Print the link of the episode
             System.out.println(animeHtml.getLinkOfTheEpisode());
             //Print the synopsis of the anime

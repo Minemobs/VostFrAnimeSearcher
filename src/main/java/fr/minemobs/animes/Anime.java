@@ -80,7 +80,7 @@ public class Anime {
                 ", genres=" + Arrays.toString(genres) +
                 ", url='" + url + '\'' +
                 ", nbrOfEps='" + nbrOfEps + '\'' +
-                ", type=" + type +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
