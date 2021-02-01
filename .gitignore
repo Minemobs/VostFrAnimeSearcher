@@ -1,4 +1,3 @@
-libs
-build
-test
-.gradle
+/build/
+/.gradle/
+/gradle/
