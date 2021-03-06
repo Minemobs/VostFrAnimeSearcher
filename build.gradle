@@ -7,6 +7,8 @@ plugins {
 
 mainClassName = "fr.minemobs.animes.Test"
 
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
 group 'org.example'
 version '1.0-SNAPSHOT'
 
@@ -14,9 +16,14 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'com.google.code.gson:gson:2.8.6'
     compile "org.jsoup:jsoup:1.10.2"
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
 }

@@ -2,22 +2,20 @@ package fr.minemobs.animes;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import okhttp3.*;
-import okhttp3.OkHttpClient.Builder;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.*;
+import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class AnimeSearcherAPI {
@@ -25,7 +23,7 @@ public class AnimeSearcherAPI {
     String urlOfNekoSama = "http://neko-sama.fr";
     String jsonUrl = urlOfNekoSama + "/animes-search.json";
 
-    String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
+    private static Logger LOGGER = Logger.getLogger(AnimeSearcherAPI.class.getName());
 
     OkHttpClient httpClient = new OkHttpClient.Builder()
             .protocols(Collections.singletonList(Protocol.HTTP_1_1))
@@ -69,12 +67,13 @@ public class AnimeSearcherAPI {
         Type animeListType = new TypeToken<List<Anime>>() {
         }.getType();
         List<Anime> animes = gson.fromJson(responseBody, animeListType);
-        List<Anime> animes1 = animes.stream().filter(anime1 -> anime1.getTitle().toLowerCase().contains(animeTitle.toLowerCase())).collect(Collectors.toList());
+        List<Anime> animes1 = animes.stream()
+                .filter(anime1 -> anime1.getTitle().toLowerCase().contains(animeTitle.toLowerCase())).collect(Collectors.toList());
         return animes1;
     }
 
     public AnimeHtml getHtmlPageOfTheAnime(Anime anime, int episodeSearched) throws Exception {
-        if(Jsoup.connect(anime.getUrl()).get() == null){
+        if(anime.getUrl() == null || Jsoup.connect(anime.getUrl()).get() == null){
             throw new NullPointerException("Cet anime n'a pas de page");
         }
         Document doc = Jsoup.connect(anime.getUrl()).get();
@@ -110,5 +109,17 @@ public class AnimeSearcherAPI {
 
     public String getUrlOfNekoSama() {
         return urlOfNekoSama;
+    }
+
+    public OkHttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public static Logger getLOGGER() {
+        return LOGGER;
     }
 }
