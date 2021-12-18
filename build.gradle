@@ -22,7 +22,7 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.13.2'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
     compile "org.jsoup:jsoup:1.13.1"
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
