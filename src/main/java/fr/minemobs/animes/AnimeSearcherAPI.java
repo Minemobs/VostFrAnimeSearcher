@@ -36,8 +36,8 @@ public class AnimeSearcherAPI {
             e.printStackTrace();
         }
         Type animeListType = new TypeToken<List<Anime>>() {}.getType();
-        return Stream.of(gson.fromJson(responseBody, animeListType)).filter(Anime.class::isInstance).map(Anime.class::cast)
-                .filter(anime -> anime.equalsTitle(animeTitle)).findFirst();
+        List<Anime> animes = gson.fromJson(responseBody, animeListType);
+        return animes.stream().filter(anime -> anime.equalsTitle(animeTitle)).findFirst();
     }
 
     public List<Anime> getJSONFromTitleContains(String animeTitle) {
@@ -46,11 +46,9 @@ public class AnimeSearcherAPI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Type animeListType = new TypeToken<List<Anime>>() {
-        }.getType();
+        Type animeListType = new TypeToken<List<Anime>>() {}.getType();
         List<Anime> animes = gson.fromJson(responseBody, animeListType);
-        return animes.stream()
-                .filter(anime -> anime.containsTitle(animeTitle)).collect(Collectors.toList());
+        return animes.stream().filter(anime -> anime.containsTitle(animeTitle)).collect(Collectors.toList());
     }
 
     public AnimeHtml getHtmlPageOfTheAnime(Anime anime, int episodeSearched) throws IOException {

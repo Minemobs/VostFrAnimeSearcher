@@ -2,6 +2,7 @@ package fr.minemobs.animes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -75,10 +76,8 @@ public class Test {
 
     private static void animeSearchContains(AnimeSearcherAPI animes, String animeTitle) {
         //Create the variable anime which get the result of the function getJSONFromTitle()
-        if (animes.getJSONFromTitleContains(animeTitle) == null) {
-            throw new NullPointerException("This anime is not on NekoSama");
-        }
-        List<Anime> animeList = animes.getJSONFromTitleContains(animeTitle);
+        List<Anime> animeList = Objects.requireNonNull(animes.getJSONFromTitleContains(animeTitle), "This anime is not on NekoSama");
+        System.out.println("AnimeList size : " + (animeList.size()));
         AnimeHtml animeHtml;
         for (Anime anime : animeList) {
             try {
@@ -97,10 +96,7 @@ public class Test {
                         break;
                     }
                 }else{
-                    animeHtml = animes.getHtmlPageOfTheAnime(anime, 1);
-                }
-                if(animeHtml == null) {
-                    throw new NullPointerException("The episode does not exist!");
+                    animeHtml = Objects.requireNonNull(animes.getHtmlPageOfTheAnime(anime, 1));
                 }
                 //Print everything
                 logger.info(
