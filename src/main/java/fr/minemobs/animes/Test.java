@@ -53,7 +53,8 @@ public class Test {
         //Create the variable anime which get the result of the function getJSONFromTitle()
         Optional<Anime> anime = animes.getJSONFromTitle(animeTitle);
         if (!anime.isPresent()) {
-            throw new NullPointerException("This anime is not on NekoSama");
+            logger.severe("This anime is not on NekoSama");
+            return;
         }
         try {
             //Create the variable animeHtml and
@@ -77,7 +78,6 @@ public class Test {
     private static void animeSearchContains(AnimeSearcherAPI animes, String animeTitle) {
         //Create the variable anime which get the result of the function getJSONFromTitle()
         List<Anime> animeList = Objects.requireNonNull(animes.getJSONFromTitleContains(animeTitle), "This anime is not on NekoSama");
-        System.out.println("AnimeList size : " + (animeList.size()));
         AnimeHtml animeHtml;
         for (Anime anime : animeList) {
             try {

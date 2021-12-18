@@ -1,6 +1,7 @@
 package fr.minemobs.animes;
 
 import com.google.gson.annotations.SerializedName;
+import fr.minemobs.animes.utils.StringUtils;
 
 import java.util.Arrays;
 
@@ -16,29 +17,27 @@ public class Anime {
     @SerializedName("nb_eps") private final String nbrOfEps;
     private final String type;
 
-    private Anime() {
+    /**
+     * You should not use this constructor.
+     */
+    public Anime() {
         this.title = "";
         this.titleEnglish = "";
         this.titleRomanji = null;
         this.id = 0;
         this.others = "";
-        this.genres = new String[0];
-        this.url = "";
-        this.nbrOfEps = "";
-        this.type = "";
+        this.genres = null;
+        this.url = null;
+        this.nbrOfEps = "0 Eps";
+        this.type = null;
     }
 
     public boolean containsTitle(String title) {
-        return this.title.toLowerCase().contains(title.toLowerCase()) ||
-                this.titleEnglish.toLowerCase().contains(title.toLowerCase()) ||
-                (this.titleRomanji != null && this.titleRomanji.toLowerCase().contains(title.toLowerCase())) ||
-                this.others.toLowerCase().contains(title.toLowerCase());
+        return StringUtils.containsIgnoreCase(title, this.title, this.titleEnglish, this.titleRomanji, this.others);
     }
 
     public boolean equalsTitle(String title) {
-        return this.title.equalsIgnoreCase(title) || this.titleEnglish.equalsIgnoreCase(title) ||
-                (this.titleRomanji != null && this.titleRomanji.equalsIgnoreCase(title)) ||
-                Arrays.stream(this.others.split(",")).anyMatch(t -> t.equalsIgnoreCase(title));
+        return StringUtils.equalsIgnoreCase(title, this.title, this.titleEnglish, this.titleRomanji, this.others);
     }
 
     public String getType() {
@@ -50,7 +49,8 @@ public class Anime {
     }
 
     public int getNbrOfEpsAsInt(){
-        return Integer.getInteger(nbrOfEps.replace(" ", "").replace("Eps", ""));
+        String nbr = nbrOfEps.replace(" Eps", "");
+        return StringUtils.isNumeric(nbr) ? Integer.parseInt(nbr) : 0;
     }
 
     public String getUrl() {
