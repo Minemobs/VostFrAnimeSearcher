@@ -1,9 +1,9 @@
 package fr.minemobs.animes;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.jsoup.Jsoup;
@@ -12,49 +12,32 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AnimeSearcherAPI {
 
-    String urlOfNekoSama = "http://neko-sama.fr";
-    String jsonUrl = urlOfNekoSama + "/animes-search.json";
+    private static final String urlOfNekoSama = "http://neko-sama.fr";
+    private static final String jsonUrl = urlOfNekoSama + "/animes-search.json";
+    private static final Logger LOGGER = Logger.getLogger(AnimeSearcherAPI.class.getName());
+    private static final Gson gson = new GsonBuilder().create();
+    private final OkHttpClient httpClient = new OkHttpClient.Builder().build();
+    private final Request request = new Request.Builder().url(jsonUrl).build();
+    private String responseBody = "";
 
-    private static Logger LOGGER = Logger.getLogger(AnimeSearcherAPI.class.getName());
-
-    OkHttpClient httpClient = new OkHttpClient.Builder()
-            .protocols(Collections.singletonList(Protocol.HTTP_1_1))
-            .build();
-
-    Request request = new Request.Builder().url(jsonUrl).build();
-
-    String responseBody = "";
-
-    public Anime getJSONFromTitle(String animeTitle) {
+    public Optional<Anime> getJSONFromTitle(String animeTitle) {
         try (Response response = httpClient.newCall(request).execute()) {
             responseBody = response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Gson gson = new Gson();
-        Type animeListType = new TypeToken<List<Anime>>() {
-        }.getType();
-        List<Anime> animes = gson.fromJson(responseBody, animeListType);
-        List<Anime> animes1 = animes.stream().filter(anime1 -> {
-            if (anime1.getTitle().equalsIgnoreCase(animeTitle)) {
-                return anime1.getTitle().equalsIgnoreCase(animeTitle);
-            } else if (anime1.getTitle_english().equalsIgnoreCase(animeTitle)) {
-                return anime1.getTitle_english().equalsIgnoreCase(animeTitle);
-            }
-            return false;
-        }).collect(Collectors.toList());
-        for (Anime anime : animes1) {
-            return anime;
-        }
-        return null;
+        Type animeListType = new TypeToken<List<Anime>>() {}.getType();
+        return Stream.of(gson.fromJson(responseBody, animeListType)).filter(Anime.class::isInstance).map(Anime.class::cast)
+                .filter(anime -> anime.equalsTitle(animeTitle)).findFirst();
     }
 
     public List<Anime> getJSONFromTitleContains(String animeTitle) {
@@ -63,17 +46,15 @@ public class AnimeSearcherAPI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Gson gson = new Gson();
         Type animeListType = new TypeToken<List<Anime>>() {
         }.getType();
         List<Anime> animes = gson.fromJson(responseBody, animeListType);
-        List<Anime> animes1 = animes.stream()
-                .filter(anime1 -> anime1.getTitle().toLowerCase().contains(animeTitle.toLowerCase())).collect(Collectors.toList());
-        return animes1;
+        return animes.stream()
+                .filter(anime -> anime.containsTitle(animeTitle)).collect(Collectors.toList());
     }
 
-    public AnimeHtml getHtmlPageOfTheAnime(Anime anime, int episodeSearched) throws Exception {
-        if(anime.getUrl() == null || Jsoup.connect(anime.getUrl()).get() == null){
+    public AnimeHtml getHtmlPageOfTheAnime(Anime anime, int episodeSearched) throws IOException {
+        if(anime.getUrl() == null) {
             throw new NullPointerException("Cet anime n'a pas de page");
         }
         Document doc = Jsoup.connect(anime.getUrl()).get();
@@ -99,8 +80,7 @@ public class AnimeSearcherAPI {
         }else {
             url = anime.getUrl().replace("info", "episode").replace("-vostfr", "-" + episodeSearched + "-vostfr");
         }
-        AnimeHtml animeHtml = new AnimeHtml(synopsis, url, nbrOfEps.intValue(), urlOfTheCover);
-        return animeHtml;
+        return new AnimeHtml(synopsis, url, nbrOfEps.intValue(), urlOfTheCover);
     }
 
     public String getJsonUrl() {

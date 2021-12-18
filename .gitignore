@@ -1,8 +1,4 @@
 /build/
 /gradle/
 /.gradle/
-/.gradle/6.5/
-/.gradle/6.5.1/
-/.gradle/buildOutputCleanup/
-/.gradle/checksums/
-/.gradle/vcs-1/
+/.idea/

@@ -5,8 +5,6 @@ plugins {
     id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
-mainClassName = "fr.minemobs.animes.Test"
-
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 group 'org.example'
@@ -16,14 +14,17 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType(JavaCompile) {
+application {
+    mainClassName = "fr.minemobs.animes.Test"
+}
+
+compileJava {
     options.encoding = 'UTF-8'
 }
 
 dependencies {
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     testCompile group: 'junit', name: 'junit', version: '4.13.2'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    compile "org.jsoup:jsoup:1.13.1"
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
 }

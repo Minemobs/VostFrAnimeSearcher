@@ -2,10 +2,10 @@ package fr.minemobs.animes;
 
 public class AnimeHtml {
 
-    private String synop;
-    private String linkOfTheEpisode;
-    private int nbrOfEps;
-    private String urlOfTheCover;
+    private final String synop;
+    private final String linkOfTheEpisode;
+    private final int nbrOfEps;
+    private final String urlOfTheCover;
 
     public AnimeHtml(String synop, String linkOfTheEpisode, int nbrOfEps, String urlOfTheCover) {
         this.synop = synop;

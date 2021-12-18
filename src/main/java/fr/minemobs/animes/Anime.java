@@ -1,30 +1,44 @@
 package fr.minemobs.animes;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Arrays;
 
 public class Anime {
 
-    private String title;
-    private String title_english;
-    private String title_romanji;
-    private int id;
-    private String other;
-    private String[] genres;
-    private String url;
-    private String nbrOfEps;
-    private String type;
+    private final String title;
+    @SerializedName("title_english") private final String titleEnglish;
+    @SerializedName("title_romanji") private final String titleRomanji;
+    private final int id;
+    private final String others;
+    private final String[] genres;
+    private final String url;
+    @SerializedName("nb_eps") private final String nbrOfEps;
+    private final String type;
 
-    public Anime(String title, String title_english, String title_romanji, int id, String other, String[] genres, String url, String nbrOfEps,
-                 String type) {
-        this.title = title;
-        this.title_english = title_english;
-        this.title_romanji = title_romanji;
-        this.id = id;
-        this.other = other;
-        this.genres = genres;
-        this.url = url;
-        this.nbrOfEps = nbrOfEps;
-        this.type = type;
+    private Anime() {
+        this.title = "";
+        this.titleEnglish = "";
+        this.titleRomanji = null;
+        this.id = 0;
+        this.others = "";
+        this.genres = new String[0];
+        this.url = "";
+        this.nbrOfEps = "";
+        this.type = "";
+    }
+
+    public boolean containsTitle(String title) {
+        return this.title.toLowerCase().contains(title.toLowerCase()) ||
+                this.titleEnglish.toLowerCase().contains(title.toLowerCase()) ||
+                (this.titleRomanji != null && this.titleRomanji.toLowerCase().contains(title.toLowerCase())) ||
+                this.others.toLowerCase().contains(title.toLowerCase());
+    }
+
+    public boolean equalsTitle(String title) {
+        return this.title.equalsIgnoreCase(title) || this.titleEnglish.equalsIgnoreCase(title) ||
+                (this.titleRomanji != null && this.titleRomanji.equalsIgnoreCase(title)) ||
+                Arrays.stream(this.others.split(",")).anyMatch(t -> t.equalsIgnoreCase(title));
     }
 
     public String getType() {
@@ -36,9 +50,7 @@ public class Anime {
     }
 
     public int getNbrOfEpsAsInt(){
-        String epsString = nbrOfEps.replace(" ", "").replace("Eps", "");
-        int episodes = Integer.getInteger(epsString);
-        return episodes;
+        return Integer.getInteger(nbrOfEps.replace(" ", "").replace("Eps", ""));
     }
 
     public String getUrl() {
@@ -49,20 +61,20 @@ public class Anime {
         return title;
     }
 
-    public String getTitle_english() {
-        return title_english;
+    public String getTitleEnglish() {
+        return titleEnglish;
     }
 
-    public String getTitle_romanji() {
-        return title_romanji;
+    public String getTitleRomanji() {
+        return titleRomanji;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getOther() {
-        return other;
+    public String getOthers() {
+        return others;
     }
 
     public String[] getGenres() {
@@ -73,10 +85,10 @@ public class Anime {
     public String toString() {
         return "Anime{" +
                 "title='" + title + '\'' +
-                ", title_english='" + title_english + '\'' +
-                ", title_romanji='" + title_romanji + '\'' +
+                ", title_english='" + titleEnglish + '\'' +
+                ", title_romanji='" + titleRomanji + '\'' +
                 ", id=" + id +
-                ", other='" + other + '\'' +
+                ", others='" + others + '\'' +
                 ", genres=" + Arrays.toString(genres) +
                 ", url='" + url + '\'' +
                 ", nbrOfEps='" + nbrOfEps + '\'' +
