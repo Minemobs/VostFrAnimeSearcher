@@ -1,5 +1,7 @@
 package fr.minemobs.animes;
 
+import org.jetbrains.annotations.Nullable;
+
 public class AnimeHtml {
 
     private final String synop;
@@ -32,6 +34,7 @@ public class AnimeHtml {
         return urlOfTheCover;
     }
 
+    @Nullable
     public String getPlayerURL() {
         return playerURL;
     }

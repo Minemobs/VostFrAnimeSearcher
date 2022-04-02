@@ -11,9 +11,8 @@ class AnimeHtmlTest {
     @Test
     void url() throws IOException {
         AnimeSearcherAPI api = new AnimeSearcherAPI(true);
-        AnimeHtml htmlPageOfTheAnime = api.getHtmlPageOfTheAnime(api.getJSONFromTitle("Hunter x Hunter (2011)").get(), 100);
-        System.out.println(htmlPageOfTheAnime.getLinkOfTheEpisode());
-        assertEquals("https://neko-sama.fr/anime/episode/5691-hunter-x-hunter-2011-100-vf", htmlPageOfTheAnime.getLinkOfTheEpisode());
+        AnimeHtml htmlPageOfTheAnime = api.getHtmlPageOfTheAnime(api.getJSONFromTitle("Haikyuu!!").get(), 21);
+        assertEquals("https://www.pstream.net/e/q99Mn4O20NaA9zq", htmlPageOfTheAnime.getPlayerURL());
     }
 
 }

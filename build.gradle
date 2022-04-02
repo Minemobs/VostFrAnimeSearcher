@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'application'
     id 'java-library'
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
@@ -12,10 +11,6 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-}
-
-application {
-    mainClassName = "fr.minemobs.animes.Test"
 }
 
 compileJava {

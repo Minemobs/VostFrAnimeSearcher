@@ -7,14 +7,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -76,9 +76,13 @@ public class AnimeSearcherAPI {
             throw new ArrayIndexOutOfBoundsException("L'episode cherché est inférieur ou égal à zero");
         }
 
-        String url = anime.getUrl().replace("info", "episode").replace("-" + (dub ? "vf" : "vostfr"), "-" + episodeSearched + "-" + (dub ? "vf" : "vostfr"));
-        Document docEpisode = Jsoup.connect(url).get();
-        String playerURL = docEpisode.body().getElementById("un_episode").attr("src");
+        String url = anime.getUrl().replace("info", "episode").replace("-" + (dub ? "vf" : "vostfr"), "-" + episodeSearched + "-" +
+                (dub ? "vf" : "vostfr"));
+        Document docEpisode = Jsoup.connect(url).userAgent(HttpConnection.DEFAULT_UA).get();
+        Optional<String> videoURLHtmlOp = docEpisode.html().lines()
+                .map(String::trim)
+                .filter(s -> s.startsWith("video[0] = 'https://www.pstream.net")).findFirst();
+        String playerURL = videoURLHtmlOp.isEmpty() ? null : videoURLHtmlOp.get().substring("video[0] = '".length(), videoURLHtmlOp.get().length() - "';".length());
         return new AnimeHtml(synopsis, url, nbrOfEps, urlOfTheCover, playerURL);
     }
 
