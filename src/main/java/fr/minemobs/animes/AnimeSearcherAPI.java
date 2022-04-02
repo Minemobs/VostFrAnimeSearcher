@@ -62,9 +62,6 @@ public class AnimeSearcherAPI {
             throw new NullPointerException("Cet anime n'a pas de page");
         }
         Document doc = Jsoup.connect(anime.getUrl()).get();
-        /*Elements titles = doc.getElementsByClass("episode");
-        AtomicInteger nbrOfEps = new AtomicInteger();
-        titles.forEach(element -> nbrOfEps.getAndIncrement());*/
         int nbrOfEps = anime.getNbrOfEpsAsInt();
 
         String synopsis = doc.getElementsByClass("synopsis").text();
@@ -80,7 +77,9 @@ public class AnimeSearcherAPI {
         }
 
         String url = anime.getUrl().replace("info", "episode").replace("-" + (dub ? "vf" : "vostfr"), "-" + episodeSearched + "-" + (dub ? "vf" : "vostfr"));
-        return new AnimeHtml(synopsis, url, nbrOfEps, urlOfTheCover);
+        Document docEpisode = Jsoup.connect(url).get();
+        String playerURL = docEpisode.body().getElementById("un_episode").attr("src");
+        return new AnimeHtml(synopsis, url, nbrOfEps, urlOfTheCover, playerURL);
     }
 
     public String getJsonUrl() {

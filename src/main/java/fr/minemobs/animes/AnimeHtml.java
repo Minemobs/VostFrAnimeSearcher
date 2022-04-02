@@ -6,12 +6,14 @@ public class AnimeHtml {
     private final String linkOfTheEpisode;
     private final int nbrOfEps;
     private final String urlOfTheCover;
+    private final String playerURL;
 
-    public AnimeHtml(String synop, String linkOfTheEpisode, int nbrOfEps, String urlOfTheCover) {
+    public AnimeHtml(String synop, String linkOfTheEpisode, int nbrOfEps, String urlOfTheCover, String playerURL) {
         this.synop = synop;
         this.linkOfTheEpisode = linkOfTheEpisode;
         this.nbrOfEps = nbrOfEps;
         this.urlOfTheCover = urlOfTheCover;
+        this.playerURL = playerURL;
     }
 
     public String getSynop() {
@@ -28,5 +30,9 @@ public class AnimeHtml {
 
     public String getUrlOfTheCover() {
         return urlOfTheCover;
+    }
+
+    public String getPlayerURL() {
+        return playerURL;
     }
 }
