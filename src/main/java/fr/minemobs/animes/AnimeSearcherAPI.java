@@ -25,11 +25,12 @@ public class AnimeSearcherAPI {
     private static final Logger LOGGER = Logger.getLogger(AnimeSearcherAPI.class.getName());
     private static final Gson gson = new GsonBuilder().create();
     private final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-    private final Request request = new Request.Builder().url(jsonUrl).build();
+    private final Request request;
     private String responseBody = "";
 
     public AnimeSearcherAPI(boolean dub) {
         jsonUrl = urlOfNekoSama + "/animes-search-" + (dub ? "vf" : "vostfr") + ".json";
+        request = new Request.Builder().url(jsonUrl).build();
     }
 
     public Optional<Anime> getJSONFromTitle(String animeTitle) {
