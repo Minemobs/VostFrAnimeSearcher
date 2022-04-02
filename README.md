@@ -17,20 +17,15 @@ repositories {
 
 And add in your dependencies this :
 
-(Replace v1.0 by the release you want)
+(Replace v1.4 by the release you want)
 
-`implementation 'com.github.Minemobs:VostFrAnimeSearcher:v1.2'`
+`implementation 'com.github.Minemobs:VostFrAnimeSearcher:v1.4'`
 
 - ### How do I use the API ?
 
 One example of a possible use.
 
 ```java
-/**
- * @author minemobs
- * @version v1.1
- */
-
 public class Test {
 
     private static final Logger logger = Logger.getLogger("Test NekoSama API");
@@ -39,7 +34,7 @@ public class Test {
         logger.info("Choose what anime you want to search.");
         Scanner scanner = new Scanner(System.in);
         //Instantiate the class AnimeSearcherAPI
-        AnimeSearcherAPI animes = new AnimeSearcherAPI();
+        AnimeSearcherAPI animes = new AnimeSearcherAPI(false);
         //Set the name of the anime
         String animeTitle = scanner.nextLine();
         logger.info("Equals or contains this string ? \n" +

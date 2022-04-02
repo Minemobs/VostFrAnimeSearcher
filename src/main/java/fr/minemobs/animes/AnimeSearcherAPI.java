@@ -21,12 +21,16 @@ import java.util.stream.Collectors;
 public class AnimeSearcherAPI {
 
     private static final String urlOfNekoSama = "http://neko-sama.fr";
-    private static final String jsonUrl = urlOfNekoSama + "/animes-search.json";
+    private static String jsonUrl;
     private static final Logger LOGGER = Logger.getLogger(AnimeSearcherAPI.class.getName());
     private static final Gson gson = new GsonBuilder().create();
     private final OkHttpClient httpClient = new OkHttpClient.Builder().build();
     private final Request request = new Request.Builder().url(jsonUrl).build();
     private String responseBody = "";
+
+    public AnimeSearcherAPI(boolean dub) {
+        jsonUrl = urlOfNekoSama + "/animes-search-" + (dub ? "vf" : "vostfr") + ".json";
+    }
 
     public Optional<Anime> getJSONFromTitle(String animeTitle) {
         try (Response response = httpClient.newCall(request).execute()) {
