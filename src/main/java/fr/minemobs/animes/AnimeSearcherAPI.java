@@ -26,9 +26,11 @@ public class AnimeSearcherAPI {
     private static final Gson gson = new GsonBuilder().create();
     private final OkHttpClient httpClient = new OkHttpClient.Builder().build();
     private final Request request;
+    private final boolean dub;
     private String responseBody = "";
 
     public AnimeSearcherAPI(boolean dub) {
+        this.dub = dub;
         jsonUrl = urlOfNekoSama + "/animes-search-" + (dub ? "vf" : "vostfr") + ".json";
         request = new Request.Builder().url(jsonUrl).build();
     }
@@ -60,9 +62,10 @@ public class AnimeSearcherAPI {
             throw new NullPointerException("Cet anime n'a pas de page");
         }
         Document doc = Jsoup.connect(anime.getUrl()).get();
-        Elements titles = doc.getElementsByClass("episode");
+        /*Elements titles = doc.getElementsByClass("episode");
         AtomicInteger nbrOfEps = new AtomicInteger();
-        titles.forEach(element -> nbrOfEps.getAndIncrement());
+        titles.forEach(element -> nbrOfEps.getAndIncrement());*/
+        int nbrOfEps = anime.getNbrOfEpsAsInt();
 
         String synopsis = doc.getElementsByClass("synopsis").text();
 
@@ -70,19 +73,14 @@ public class AnimeSearcherAPI {
                 doc.getElementsByClass("cover").html().indexOf("https://"),
                 doc.getElementsByClass("cover").html().indexOf(".jpg") + 4);
 
-        if(episodeSearched > nbrOfEps.get()){
+        if(episodeSearched > nbrOfEps){
             throw new ArrayIndexOutOfBoundsException("L'episode cherché est supérieur au nombre d'épisode existant");
         }else if(episodeSearched <= 0){
             throw new ArrayIndexOutOfBoundsException("L'episode cherché est inférieur ou égal à zero");
         }
 
-        String url;
-        if(episodeSearched < 10){
-            url = anime.getUrl().replace("info", "episode").replace("-vostfr", "-0" + episodeSearched + "-vostfr");
-        }else {
-            url = anime.getUrl().replace("info", "episode").replace("-vostfr", "-" + episodeSearched + "-vostfr");
-        }
-        return new AnimeHtml(synopsis, url, nbrOfEps.intValue(), urlOfTheCover);
+        String url = anime.getUrl().replace("info", "episode").replace("-" + (dub ? "vf" : "vostfr"), "-" + episodeSearched + "-" + (dub ? "vf" : "vostfr"));
+        return new AnimeHtml(synopsis, url, nbrOfEps, urlOfTheCover);
     }
 
     public String getJsonUrl() {
