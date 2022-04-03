@@ -50,7 +50,7 @@ public class Anime {
 
     public int getNbrOfEpsAsInt(){
         String nbr = nbrOfEps.replace(" Eps", "");
-        return StringUtils.isNumeric(nbr) ? Integer.parseInt(nbr) : 0;
+        return StringUtils.isNumeric(nbr) ? Integer.parseInt(nbr) : 1;
     }
 
     public String getUrl() {
