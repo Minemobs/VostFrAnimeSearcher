@@ -13,7 +13,6 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -54,7 +53,7 @@ public class AnimeSearcherAPI {
         }
         Type animeListType = new TypeToken<List<Anime>>() {}.getType();
         List<Anime> animes = gson.fromJson(responseBody, animeListType);
-        return animes.stream().filter(anime -> anime.containsTitle(animeTitle)).collect(Collectors.toList());
+        return animes.stream().filter(anime -> anime.containsTitle(animeTitle)).toList();
     }
 
     public AnimeHtml getHtmlPageOfTheAnime(Anime anime, int episodeSearched) throws IOException {
@@ -76,7 +75,8 @@ public class AnimeSearcherAPI {
             throw new ArrayIndexOutOfBoundsException("L'episode cherché est inférieur ou égal à zero");
         }
 
-        String url = anime.getUrl().replace("info", "episode").replace("-" + (dub ? "vf" : "vostfr"), "-" + episodeSearched + "-" +
+        String url = anime.getUrl().replace("info", "episode").replace("-" + (dub ? "vf" : "vostfr"),
+                "-" + (episodeSearched < 10 ? "0" : "") + episodeSearched + "-" +
                 (dub ? "vf" : "vostfr"));
         Document docEpisode = Jsoup.connect(url).userAgent(HttpConnection.DEFAULT_UA).get();
         Optional<String> videoURLHtmlOp = docEpisode.html().lines()
