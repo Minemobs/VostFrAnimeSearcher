@@ -79,8 +79,8 @@ public class AnimeSearcherAPI {
                 (dub ? "vf" : "vostfr"));
         Document docEpisode = Jsoup.connect(url).userAgent(HttpConnection.DEFAULT_UA).get();
         Optional<String> videoURLHtmlOp = docEpisode.body().getElementsByTag("script").html().lines()
-                .map(String::trim)
-                .filter(s -> s.startsWith("video[0] = 'https://www.pstream.net") || s.startsWith("video[0] = 'https://veestream.net/e/'")).findFirst();
+                .map(String::strip)
+                .filter(s -> s.startsWith("video[0] = 'https://www.pstream.net") || s.startsWith("video[0] = 'https://veestream.net/e/")).findFirst();
         String playerURL = videoURLHtmlOp.isEmpty() ? null : videoURLHtmlOp.get().substring("video[0] = '".length(), videoURLHtmlOp.get().length() - "';".length());
         return new AnimeHtml(synopsis, url, nbrOfEps, urlOfTheCover, playerURL);
     }
